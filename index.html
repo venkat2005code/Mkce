@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Automated Diagnostic System</title>
+        <!-- TailwindCSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                50: '#eef2ff',
+                                100: '#e0e7ff',
+                                200: '#c7d2fe',
+                                300: '#a5b4fc',
+                                400: '#818cf8',
+                                500: '#6366f1',
+                                600: '#4f46e5',
+                                700: '#4338ca',
+                                800: '#3730a3',
+                                900: '#312e81'
+                            }
+                        },
+                        boxShadow: {
+                            soft: '0 10px 30px rgba(17, 24, 39, 0.12)'
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            .glass {
+                background: rgba(255,255,255,0.75);
+                backdrop-filter: blur(10px);
+            }
+            .fade-in { animation: fadeIn 300ms ease-out; }
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
+        </style>
+    </head>
+    <body class="min-h-screen bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600">
+        <!-- Navbar -->
+        <header class="sticky top-0 z-30 bg-white/10 backdrop-blur-md border-b border-white/20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded-xl bg-white/90 flex items-center justify-center shadow-soft">
+                            <span class="text-primary-700 text-xl">🏥</span>
+                        </div>
+                        <div>
+                            <h1 class="text-white font-semibold tracking-wide">Automated Diagnostic System</h1>
+                            <p class="text-white/80 text-xs">Intelligent Patient Analysis & Insights</p>
+                        </div>
+                    </div>
+                    <div class="hidden sm:flex items-center gap-2">
+                        <a href="/" class="inline-flex items-center gap-2 bg-gradient-to-r from-fuchsia-500 to-indigo-600 hover:from-fuchsia-600 hover:to-indigo-700 text-white px-4 py-2 rounded-xl shadow-md ring-1 ring-white/40 transition-transform hover:scale-[1.02]">Home</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+            <div class="rounded-2xl glass shadow-soft p-6 sm:p-8 text-slate-800">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Clinical-grade analysis, instantly</h2>
+                        <p class="mt-2 text-slate-600">Enter patient information and lab results to generate a detailed diagnostic report with risk assessment, findings, and recommendations.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium">Secure & Local</div>
+                        <div class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-medium">Fast Analysis</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-16 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Form -->
+            <section class="lg:col-span-2">
+                <form id="patientForm" class="space-y-6">
+                    <!-- Basic Information -->
+                    <div class="rounded-2xl glass shadow-soft p-6 sm:p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-slate-800">📋 Basic Information</h3>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-slate-700">Patient Name *</label>
+                                <input id="name" name="name" required type="text" placeholder="John Doe" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label for="age" class="block text-sm font-medium text-slate-700">Age *</label>
+                                <input id="age" name="age" required type="number" min="1" max="120" placeholder="45" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label for="gender" class="block text-sm font-medium text-slate-700">Gender *</label>
+                                <select id="gender" name="gender" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="blood_group" class="block text-sm font-medium text-slate-700">Blood Group</label>
+                                <select id="blood_group" name="blood_group" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vital Signs -->
+                    <div class="rounded-2xl glass shadow-soft p-6 sm:p-8">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">💓 Vital Signs</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                                <label for="temperature" class="block text-sm font-medium text-slate-700">Temperature (°C)</label>
+                                <input id="temperature" name="temperature" type="number" step="0.1" placeholder="37.0" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label for="bp_systolic" class="block text-sm font-medium text-slate-700">BP - Systolic (mmHg)</label>
+                                <input id="bp_systolic" name="bp_systolic" type="number" placeholder="120" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label for="bp_diastolic" class="block text-sm font-medium text-slate-700">BP - Diastolic (mmHg)</label>
+                                <input id="bp_diastolic" name="bp_diastolic" type="number" placeholder="80" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label for="heart_rate" class="block text-sm font-medium text-slate-700">Heart Rate (bpm)</label>
+                                <input id="heart_rate" name="heart_rate" type="number" placeholder="72" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label for="respiratory_rate" class="block text-sm font-medium text-slate-700">Respiratory Rate (bpm)</label>
+                                <input id="respiratory_rate" name="respiratory_rate" type="number" placeholder="16" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label for="oxygen_saturation" class="block text-sm font-medium text-slate-700">Oxygen Saturation (%)</label>
+                                <input id="oxygen_saturation" name="oxygen_saturation" type="number" step="0.1" placeholder="98" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label for="weight" class="block text-sm font-medium text-slate-700">Weight (kg)</label>
+                                <input id="weight" name="weight" type="number" step="0.1" placeholder="70" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label for="height" class="block text-sm font-medium text-slate-700">Height (cm)</label>
+                                <input id="height" name="height" type="number" step="0.1" placeholder="170" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Labs -->
+                    <div class="rounded-2xl glass shadow-soft p-6 sm:p-8">
+                        <h3 class="text-lg font-semibold text-slate-800">🔬 Laboratory Results</h3>
+                        <div class="mt-4 grid grid-cols-1 gap-6">
+                            <div>
+                                <h4 class="text-sm font-semibold text-slate-600">Complete Blood Count (CBC)</h4>
+                                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div>
+                                        <label for="hemoglobin" class="block text-sm font-medium text-slate-700">Hemoglobin (g/dL)</label>
+                                        <input id="hemoglobin" name="hemoglobin" type="number" step="0.1" placeholder="14.0" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                    <div>
+                                        <label for="wbc_count" class="block text-sm font-medium text-slate-700">WBC Count (cells/μL)</label>
+                                        <input id="wbc_count" name="wbc_count" type="number" step="1" placeholder="7000" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                    <div>
+                                        <label for="platelet_count" class="block text-sm font-medium text-slate-700">Platelet Count (cells/μL)</label>
+                                        <input id="platelet_count" name="platelet_count" type="number" step="1000" placeholder="250000" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-sm font-semibold text-slate-600">Blood Sugar</h4>
+                                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div>
+                                        <label for="fasting_glucose" class="block text-sm font-medium text-slate-700">Fasting Glucose (mg/dL)</label>
+                                        <input id="fasting_glucose" name="fasting_glucose" type="number" step="0.1" placeholder="90" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                    <div>
+                                        <label for="hba1c" class="block text-sm font-medium text-slate-700">HbA1c (%)</label>
+                                        <input id="hba1c" name="hba1c" type="number" step="0.1" placeholder="5.5" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-sm font-semibold text-slate-600">Lipid Profile</h4>
+                                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div>
+                                        <label for="total_cholesterol" class="block text-sm font-medium text-slate-700">Total Cholesterol (mg/dL)</label>
+                                        <input id="total_cholesterol" name="total_cholesterol" type="number" step="1" placeholder="180" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                    <div>
+                                        <label for="ldl_cholesterol" class="block text-sm font-medium text-slate-700">LDL Cholesterol (mg/dL)</label>
+                                        <input id="ldl_cholesterol" name="ldl_cholesterol" type="number" step="1" placeholder="100" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                    <div>
+                                        <label for="hdl_cholesterol" class="block text-sm font-medium text-slate-700">HDL Cholesterol (mg/dL)</label>
+                                        <input id="hdl_cholesterol" name="hdl_cholesterol" type="number" step="1" placeholder="50" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                    <div>
+                                        <label for="triglycerides" class="block text-sm font-medium text-slate-700">Triglycerides (mg/dL)</label>
+                                        <input id="triglycerides" name="triglycerides" type="number" step="1" placeholder="150" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-sm font-semibold text-slate-600">Kidney & Liver Function</h4>
+                                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div>
+                                        <label for="creatinine" class="block text-sm font-medium text-slate-700">Creatinine (mg/dL)</label>
+                                        <input id="creatinine" name="creatinine" type="number" step="0.01" placeholder="1.0" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                    <div>
+                                        <label for="sgot_ast" class="block text-sm font-medium text-slate-700">SGOT/AST (U/L)</label>
+                                        <input id="sgot_ast" name="sgot_ast" type="number" step="1" placeholder="30" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                    <div>
+                                        <label for="sgpt_alt" class="block text-sm font-medium text-slate-700">SGPT/ALT (U/L)</label>
+                                        <input id="sgpt_alt" name="sgpt_alt" type="number" step="1" placeholder="30" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-sm font-semibold text-slate-600">Thyroid Function</h4>
+                                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div>
+                                        <label for="tsh" class="block text-sm font-medium text-slate-700">TSH (mIU/L)</label>
+                                        <input id="tsh" name="tsh" type="number" step="0.01" placeholder="2.0" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Symptoms -->
+                    <div class="rounded-2xl glass shadow-soft p-6 sm:p-8">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-3">🩺 Symptoms</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="chief_complaint" class="block text-sm font-medium text-slate-700">Chief Complaint</label>
+                                <textarea id="chief_complaint" name="chief_complaint" placeholder="Describe the main complaint..." class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-primary-500"></textarea>
+                            </div>
+                            <div>
+                                <label for="symptoms_list" class="block text-sm font-medium text-slate-700">Symptoms (comma-separated)</label>
+                                <textarea id="symptoms_list" name="symptoms_list" placeholder="fever, headache, fatigue..." class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-primary-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="inline-flex items-center gap-2 bg-gradient-to-r from-fuchsia-500 to-indigo-600 hover:from-fuchsia-600 hover:to-indigo-700 text-white px-7 py-3.5 rounded-2xl shadow-lg shadow-fuchsia-500/30 ring-2 ring-white/40 transition-transform hover:scale-[1.02]">
+                            <span>🔍 Analyze Patient Data</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Loading -->
+                <div id="loading" class="hidden mt-6">
+                    <div class="rounded-2xl glass shadow-soft p-8 flex items-center gap-4">
+                        <svg class="animate-spin h-6 w-6 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                        </svg>
+                        <p class="text-slate-700 font-medium">Analyzing patient data...</p>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div id="results" class="hidden mt-6"></div>
+            </section>
+
+            <!-- Sidebar -->
+            <aside class="space-y-6">
+                <div class="rounded-2xl glass shadow-soft p-6">
+                    <h4 class="text-slate-800 font-semibold">Tips for Best Results</h4>
+                    <ul class="mt-3 space-y-2 text-sm text-slate-700 list-disc pl-5">
+                        <li>Provide as many lab values as available</li>
+                        <li>Fill vital signs for accurate risk scoring</li>
+                        <li>Include key symptoms with duration</li>
+                        <li>Use the sample JSONs via API for testing</li>
+                    </ul>
+                </div>
+                
+            </aside>
+        </main>
+
+        <script>
+            const loadingEl = document.getElementById('loading');
+            const resultsEl = document.getElementById('results');
+
+            document.getElementById('patientForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Show loading
+                loadingEl.classList.remove('hidden');
+                resultsEl.classList.add('hidden');
+
+                // Collect form data (unchanged contract)
+                const formData = new FormData(e.target);
+                const data = {
+                    name: formData.get('name'),
+                    age: parseInt(formData.get('age')),
+                    gender: formData.get('gender'),
+                    blood_group: formData.get('blood_group') || null,
+                    vital_signs: {},
+                    lab_results: {},
+                    symptoms: {}
+                };
+
+                if (formData.get('temperature')) {
+                    data.vital_signs = {
+                        temperature: parseFloat(formData.get('temperature') || 37.0),
+                        blood_pressure_systolic: parseInt(formData.get('bp_systolic') || 120),
+                        blood_pressure_diastolic: parseInt(formData.get('bp_diastolic') || 80),
+                        heart_rate: parseInt(formData.get('heart_rate') || 72),
+                        respiratory_rate: parseInt(formData.get('respiratory_rate') || 16),
+                        oxygen_saturation: parseFloat(formData.get('oxygen_saturation') || 98),
+                        weight: parseFloat(formData.get('weight') || 70),
+                        height: parseFloat(formData.get('height') || 170)
+                    };
+                }
+
+                const labFields = ['hemoglobin', 'wbc_count', 'platelet_count', 'fasting_glucose', 'hba1c',
+                    'total_cholesterol', 'ldl_cholesterol', 'hdl_cholesterol', 'triglycerides',
+                    'creatinine', 'sgot_ast', 'sgpt_alt', 'tsh'];
+
+                labFields.forEach(field => {
+                    const value = formData.get(field);
+                    if (value) data.lab_results[field] = parseFloat(value);
+                });
+
+                if (formData.get('chief_complaint')) {
+                    data.symptoms = {
+                        chief_complaint: formData.get('chief_complaint'),
+                        symptoms_list: formData.get('symptoms_list') ? formData.get('symptoms_list').split(',').map(s => s.trim()) : []
+                    };
+                }
+
+                try {
+                    const response = await fetch('/api/analyze', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    const result = await response.json();
+
+                    loadingEl.classList.add('hidden');
+                    if (result.success) {
+                        displayResults(result.report);
+                    } else {
+                        alert('Error: ' + result.error);
+                    }
+                } catch (error) {
+                    loadingEl.classList.add('hidden');
+                    alert('Error connecting to server: ' + error.message);
+                }
+            });
+
+            function riskBadgeClasses(risk) {
+                const base = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold';
+                const map = {
+                    normal: 'bg-emerald-100 text-emerald-700',
+                    low: 'bg-yellow-100 text-yellow-800',
+                    moderate: 'bg-amber-100 text-amber-800',
+                    high: 'bg-rose-100 text-rose-700',
+                    critical: 'bg-rose-600 text-white'
+                };
+                return base + ' ' + (map[risk] || 'bg-slate-100 text-slate-700');
+            }
+
+            function findingAccent(status) {
+                return {
+                    normal: 'border-emerald-400',
+                    low: 'border-yellow-400',
+                    moderate: 'border-amber-500',
+                    high: 'border-rose-500',
+                    critical: 'border-rose-700'
+                }[status] || 'border-slate-300';
+            }
+
+            function displayResults(report) {
+                const header = `
+                    <div class="rounded-2xl glass shadow-soft p-6 fade-in">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div>
+                                <h3 class="text-xl font-semibold text-slate-800">📊 Diagnostic Report</h3>
+                                <p class="text-slate-600 text-sm mt-1">Executive Summary & Key Findings</p>
+                            </div>
+                            <div class="${riskBadgeClasses(report.overall_risk)}">Overall Risk: ${report.overall_risk.toUpperCase()}</div>
+                        </div>
+                        <p class="mt-4 text-slate-700 whitespace-pre-line leading-7">${report.summary}</p>
+                    </div>
+                `;
+
+                let actions = '';
+                if (report.immediate_actions?.length) {
+                    actions = `
+                        <div class="rounded-2xl bg-rose-50 border border-rose-200 p-6 fade-in mt-6">
+                            <h4 class="text-rose-700 font-semibold">⚠️ Immediate Actions Required</h4>
+                            <ul class="mt-3 space-y-2 text-sm text-rose-800 list-disc pl-5">
+                                ${report.immediate_actions.map(a => `<li>${a}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                let conditions = '';
+                if (report.possible_conditions?.length) {
+                    conditions = `
+                        <div class="rounded-2xl glass shadow-soft p-6 fade-in mt-6">
+                            <h4 class="text-slate-800 font-semibold">🔍 Possible Conditions</h4>
+                            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                ${report.possible_conditions.map(c => `
+                                    <div class="rounded-xl border border-slate-200 bg-white/70 p-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="font-medium text-slate-800">${c.condition}</div>
+                                            <span class="text-xs text-slate-600">${c.confidence}</span>
+                                        </div>
+                                        <p class="text-sm text-slate-600 mt-2">${c.description}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                let findings = '';
+                if (report.findings?.length) {
+                    findings = `
+                        <div class="rounded-2xl glass shadow-soft p-6 fade-in mt-6">
+                            <h4 class="text-slate-800 font-semibold">📈 Detailed Findings (${report.findings.length})</h4>
+                            <div class="mt-4 grid grid-cols-1 gap-4">
+                                ${report.findings.map(f => `
+                                    <div class="rounded-xl border-l-4 ${findingAccent(f.status)} bg-white/70 p-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="font-semibold text-slate-800">${f.category}: ${f.parameter}</div>
+                                            <span class="${riskBadgeClasses(f.status)}">${f.status.toUpperCase()}</span>
+                                        </div>
+                                        <p class="text-sm text-slate-700 mt-2"><strong>Value:</strong> ${f.value} <span class="text-slate-500">(Normal: ${f.normal_range})</span></p>
+                                        <p class="text-sm text-slate-700 mt-1"><strong>Interpretation:</strong> ${f.interpretation}</p>
+                                        ${f.recommendations?.length ? `
+                                        <div class="mt-2">
+                                            <strong class="text-sm text-slate-800">Recommendations:</strong>
+                                            <ul class="mt-1 text-sm text-slate-700 list-disc pl-5">
+                                                ${f.recommendations.map(r => `<li>${r}</li>`).join('')}
+                                            </ul>
+                                        </div>` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                let followups = '';
+                if (report.follow_up_tests?.length) {
+                    followups = `
+                        <div class="rounded-2xl glass shadow-soft p-6 fade-in mt-6">
+                            <h4 class="text-slate-800 font-semibold">🧪 Recommended Follow-up Tests</h4>
+                            <ul class="mt-3 text-sm text-slate-700 list-disc pl-5">
+                                ${report.follow_up_tests.map(t => `<li>${t}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                let general = '';
+                if (report.general_recommendations?.length) {
+                    general = `
+                        <div class="rounded-2xl glass shadow-soft p-6 fade-in mt-6">
+                            <h4 class="text-slate-800 font-semibold">💡 General Health Recommendations</h4>
+                            <ul class="mt-3 text-sm text-slate-700 list-disc pl-5">
+                                ${report.general_recommendations.map(r => `<li>${r}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                const disclaimer = `
+                    <div class="rounded-2xl bg-amber-50 border border-amber-200 p-6 fade-in mt-6">
+                        <strong class="text-amber-800">⚕️ Important Disclaimer:</strong>
+                        <p class="text-sm text-amber-800 mt-2">This is an automated preliminary analysis tool. All findings should be reviewed and confirmed by a qualified healthcare professional. Do not use this tool as a substitute for professional medical advice, diagnosis, or treatment.</p>
+                    </div>
+                `;
+
+                resultsEl.innerHTML = header + actions + conditions + findings + followups + general + disclaimer;
+                resultsEl.classList.remove('hidden');
+                resultsEl.scrollIntoView({ behavior: 'smooth' });
+            }
+        </script>
+    </body>
+</html>
