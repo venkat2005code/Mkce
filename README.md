@@ -46,7 +46,8 @@ Mkce/
 │   ├── patient_model.py          # Data models for patient information
 │   └── diagnostic_engine.py      # Core diagnostic analysis engine
 ├── frontend/
-│   └── index.html                # Web interface
+│   ├── home.html                 # Landing page
+│   └── index.html                # Analysis UI
 ├── data/
 │   ├── sample_patient_diabetic.json
 │   └── sample_patient_anemia_thyroid.json
@@ -77,21 +78,21 @@ pip install -r requirements.txt
 
 3. **Run the server**
 ```bash
-cd backend
-python app.py
+python3 backend/app.py
 ```
 
 4. **Access the application**
 Open your browser and navigate to:
 ```
-http://localhost:5000
+Home:     http://localhost:8080/
+Analyze:  http://localhost:8080/analyze
 ```
 
 ## 📖 Usage
 
 ### Web Interface
 
-1. **Open** the web interface at `http://localhost:5000`
+1. **Open** the analysis page at `http://localhost:8080/analyze` (or start from `http://localhost:8080/` and click Start Analysis)
 2. **Fill in** patient information:
    - Basic Information (name, age, gender)
    - Vital Signs (temperature, blood pressure, heart rate, etc.)
@@ -155,12 +156,12 @@ Test the system with provided sample data:
 
 ```bash
 # Test with diabetic patient
-curl -X POST http://localhost:5000/api/analyze \
+curl -X POST http://localhost:8080/api/analyze \
   -H "Content-Type: application/json" \
   -d @data/sample_patient_diabetic.json
 
 # Test with anemia/thyroid patient
-curl -X POST http://localhost:5000/api/analyze \
+curl -X POST http://localhost:8080/api/analyze \
   -H "Content-Type: application/json" \
   -d @data/sample_patient_anemia_thyroid.json
 ```
@@ -208,7 +209,8 @@ The test suite includes:
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/` | GET | Web interface |
+| `/` | GET | Home (landing page) |
+| `/analyze` | GET | Analysis UI |
 | `/api/health` | GET | Health check |
 | `/api/analyze` | POST | Analyze patient data |
 | `/api/patient/<id>` | GET | Get patient by ID |
