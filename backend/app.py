@@ -32,8 +32,14 @@ patients_db = {}
 
 
 @app.route('/')
-def index():
-    """Serve main web interface"""
+def home():
+    """Serve landing page"""
+    return render_template('home.html')
+
+
+@app.route('/analyze')
+def analyze_page():
+    """Serve analysis UI"""
     return render_template('index.html')
 
 

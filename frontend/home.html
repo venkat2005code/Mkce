@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Automated Diagnostic System · Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: '#eef2ff',
+                100: '#e0e7ff',
+                200: '#c7d2fe',
+                300: '#a5b4fc',
+                400: '#818cf8',
+                500: '#6366f1',
+                600: '#4f46e5',
+                700: '#4338ca',
+                800: '#3730a3',
+                900: '#312e81'
+              }
+            },
+            boxShadow: { soft: '0 10px 30px rgba(17, 24, 39, 0.12)' }
+          }
+        }
+      }
+    </script>
+    <style>
+      .glass { background: rgba(255,255,255,0.75); backdrop-filter: blur(10px); }
+      .fade-in { animation: fadeIn 400ms ease-out; }
+      @keyframes fadeIn { from { opacity:0; transform: translateY(8px);} to {opacity:1; transform:none;} }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-slate-800">
+    <!-- Navbar -->
+    <header class="sticky top-0 z-30 bg-white/10 backdrop-blur-md border-b border-white/20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl bg-white/90 flex items-center justify-center shadow-soft">
+              <span class="text-primary-700 text-xl">🏥</span>
+            </div>
+            <div>
+              <h1 class="text-white font-semibold tracking-wide">Automated Diagnostic System</h1>
+              <p class="text-white/80 text-xs">Intelligent Patient Analysis & Insights</p>
+            </div>
+          </div>
+          <nav class="hidden sm:flex items-center gap-3">
+            <a href="/analyze" class="text-white/90 text-sm hover:text-white transition">Start Analysis</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+      <div class="rounded-3xl glass shadow-soft p-8 sm:p-12 fade-in">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">Clinical-grade analysis, made simple</h2>
+            <p class="mt-4 text-slate-700 leading-7">Enter patient details and lab results to receive a structured, explainable diagnostic report with risk assessment, key findings, and recommendations. Runs locally for privacy.</p>
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a href="/analyze" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-xl shadow-soft transition">
+                <span>🔍 Start Analysis</span>
+              </a>
+              <a href="https://github.com/venkat2005code/Mkce" target="_blank" class="inline-flex items-center gap-2 bg-white/80 hover:bg-white text-primary-700 px-6 py-3 rounded-xl shadow-soft transition">
+                <span>📦 View Source</span>
+              </a>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-white/70 border border-slate-200 p-6">
+            <h3 class="text-lg font-semibold">What you get</h3>
+            <ul class="mt-3 space-y-2 text-slate-700 list-disc pl-5">
+              <li>Overall risk level (Normal → Critical)</li>
+              <li>Detailed findings across vitals & labs</li>
+              <li>Immediate actions for critical flags</li>
+              <li>Follow-up tests and lifestyle advice</li>
+            </ul>
+            <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+              <div class="rounded-xl bg-emerald-50 border border-emerald-200 p-3">
+                <div class="text-emerald-700 font-medium">Local & Private</div>
+                <div class="text-emerald-700/80">No cloud required</div>
+              </div>
+              <div class="rounded-xl bg-indigo-50 border border-indigo-200 p-3">
+                <div class="text-indigo-700 font-medium">Fast Results</div>
+                <div class="text-indigo-700/80">Instant feedback</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Steps -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="rounded-2xl glass shadow-soft p-6">
+          <div class="text-2xl">🧍‍♀️</div>
+          <h4 class="mt-2 font-semibold">1. Add patient info</h4>
+          <p class="text-slate-700 mt-1 text-sm">Fill in name, age, gender, and vital signs if available.</p>
+        </div>
+        <div class="rounded-2xl glass shadow-soft p-6">
+          <div class="text-2xl">🧪</div>
+          <h4 class="mt-2 font-semibold">2. Enter lab results</h4>
+          <p class="text-slate-700 mt-1 text-sm">Provide CBC, sugar, lipid profile, thyroid and more.</p>
+        </div>
+        <div class="rounded-2xl glass shadow-soft p-6">
+          <div class="text-2xl">📊</div>
+          <h4 class="mt-2 font-semibold">3. Get the report</h4>
+          <p class="text-slate-700 mt-1 text-sm">Review findings, actions, follow-up tests, and advice.</p>
+        </div>
+      </div>
+      <div class="text-center">
+        <a href="/analyze" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-xl shadow-soft transition">
+          <span>Start now</span>
+        </a>
+      </div>
+    </section>
+  </body>
+</html>
