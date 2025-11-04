@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Diagnostic System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .results {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .risk-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .risk-normal { background: #d4edda; color: #155724; }
+        .risk-low { background: #fff3cd; color: #856404; }
+        .risk-moderate { background: #ffeaa7; color: #d35400; }
+        .risk-high { background: #f8d7da; color: #721c24; }
+        .risk-critical { background: #d63031; color: white; }
+        
+        .findings-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .finding-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .finding-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .finding-title {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .condition-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .recommendations {
+            margin-top: 20px;
+        }
+        
+        .recommendations ul {
+            list-style-position: inside;
+            padding-left: 10px;
+        }
+        
+        .recommendations li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .summary-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            white-space: pre-line;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Automated Diagnostic System</h1>
+            <p>Intelligent Patient Analysis & Diagnostic Insights</p>
+        </div>
+        
+        <div class="main-content">
+            <form id="patientForm">
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <h2>📋 Basic Information</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Patient Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age *</label>
+                            <input type="number" id="age" name="age" min="1" max="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender *</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="blood_group">Blood Group</label>
+                            <select id="blood_group" name="blood_group">
+                                <option value="">Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Vital Signs -->
+                <div class="form-section">
+                    <h2>💓 Vital Signs</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="temperature">Temperature (°C)</label>
+                            <input type="number" id="temperature" name="temperature" step="0.1" placeholder="37.0">
+                        </div>
+                        <div class="form-group">
+                            <label for="bp_systolic">Blood Pressure - Systolic (mmHg)</label>
+                            <input type="number" id="bp_systolic" name="bp_systolic" placeholder="120">
+                        </div>
+                        <div class="form-group">
+                            <label for="bp_diastolic">Blood Pressure - Diastolic (mmHg)</label>
+                            <input type="number" id="bp_diastolic" name="bp_diastolic" placeholder="80">
+                        </div>
+                        <div class="form-group">
+                            <label for="heart_rate">Heart Rate (bpm)</label>
+                            <input type="number" id="heart_rate" name="heart_rate" placeholder="72">
+                        </div>
+                        <div class="form-group">
+                            <label for="respiratory_rate">Respiratory Rate (breaths/min)</label>
+                            <input type="number" id="respiratory_rate" name="respiratory_rate" placeholder="16">
+                        </div>
+                        <div class="form-group">
+                            <label for="oxygen_saturation">Oxygen Saturation (%)</label>
+                            <input type="number" id="oxygen_saturation" name="oxygen_saturation" step="0.1" placeholder="98">
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" id="weight" name="weight" step="0.1" placeholder="70">
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Height (cm)</label>
+                            <input type="number" id="height" name="height" step="0.1" placeholder="170">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lab Results -->
+                <div class="form-section">
+                    <h2>🔬 Laboratory Results</h2>
+                    
+                    <h3 style="margin-top: 20px; color: #555;">Complete Blood Count (CBC)</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hemoglobin">Hemoglobin (g/dL)</label>
+                            <input type="number" id="hemoglobin" name="hemoglobin" step="0.1" placeholder="14.0">
+                        </div>
+                        <div class="form-group">
+                            <label for="wbc_count">WBC Count (cells/μL)</label>
+                            <input type="number" id="wbc_count" name="wbc_count" step="1" placeholder="7000">
+                        </div>
+                        <div class="form-group">
+                            <label for="platelet_count">Platelet Count (cells/μL)</label>
+                            <input type="number" id="platelet_count" name="platelet_count" step="1000" placeholder="250000">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-top: 20px; color: #555;">Blood Sugar</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fasting_glucose">Fasting Glucose (mg/dL)</label>
+                            <input type="number" id="fasting_glucose" name="fasting_glucose" step="0.1" placeholder="90">
+                        </div>
+                        <div class="form-group">
+                            <label for="hba1c">HbA1c (%)</label>
+                            <input type="number" id="hba1c" name="hba1c" step="0.1" placeholder="5.5">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-top: 20px; color: #555;">Lipid Profile</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="total_cholesterol">Total Cholesterol (mg/dL)</label>
+                            <input type="number" id="total_cholesterol" name="total_cholesterol" step="1" placeholder="180">
+                        </div>
+                        <div class="form-group">
+                            <label for="ldl_cholesterol">LDL Cholesterol (mg/dL)</label>
+                            <input type="number" id="ldl_cholesterol" name="ldl_cholesterol" step="1" placeholder="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="hdl_cholesterol">HDL Cholesterol (mg/dL)</label>
+                            <input type="number" id="hdl_cholesterol" name="hdl_cholesterol" step="1" placeholder="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="triglycerides">Triglycerides (mg/dL)</label>
+                            <input type="number" id="triglycerides" name="triglycerides" step="1" placeholder="150">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-top: 20px; color: #555;">Kidney & Liver Function</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="creatinine">Creatinine (mg/dL)</label>
+                            <input type="number" id="creatinine" name="creatinine" step="0.01" placeholder="1.0">
+                        </div>
+                        <div class="form-group">
+                            <label for="sgot_ast">SGOT/AST (U/L)</label>
+                            <input type="number" id="sgot_ast" name="sgot_ast" step="1" placeholder="30">
+                        </div>
+                        <div class="form-group">
+                            <label for="sgpt_alt">SGPT/ALT (U/L)</label>
+                            <input type="number" id="sgpt_alt" name="sgpt_alt" step="1" placeholder="30">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-top: 20px; color: #555;">Thyroid Function</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tsh">TSH (mIU/L)</label>
+                            <input type="number" id="tsh" name="tsh" step="0.01" placeholder="2.0">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Symptoms -->
+                <div class="form-section">
+                    <h2>🩺 Symptoms</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="chief_complaint">Chief Complaint</label>
+                            <textarea id="chief_complaint" name="chief_complaint" placeholder="Describe the main complaint..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="symptoms_list">Symptoms (comma-separated)</label>
+                            <textarea id="symptoms_list" name="symptoms_list" placeholder="fever, headache, fatigue..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <button type="submit" class="btn btn-primary">🔍 Analyze Patient Data</button>
+                </div>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 20px; color: #667eea; font-weight: 600;">Analyzing patient data...</p>
+            </div>
+            
+            <div class="results" id="results">
+                <!-- Results will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('patientForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loading
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('results').classList.remove('show');
+            
+            // Collect form data
+            const formData = new FormData(e.target);
+            const data = {
+                name: formData.get('name'),
+                age: parseInt(formData.get('age')),
+                gender: formData.get('gender'),
+                blood_group: formData.get('blood_group') || null,
+                vital_signs: {},
+                lab_results: {},
+                symptoms: {}
+            };
+            
+            // Vital signs
+            if (formData.get('temperature')) {
+                data.vital_signs = {
+                    temperature: parseFloat(formData.get('temperature') || 37.0),
+                    blood_pressure_systolic: parseInt(formData.get('bp_systolic') || 120),
+                    blood_pressure_diastolic: parseInt(formData.get('bp_diastolic') || 80),
+                    heart_rate: parseInt(formData.get('heart_rate') || 72),
+                    respiratory_rate: parseInt(formData.get('respiratory_rate') || 16),
+                    oxygen_saturation: parseFloat(formData.get('oxygen_saturation') || 98),
+                    weight: parseFloat(formData.get('weight') || 70),
+                    height: parseFloat(formData.get('height') || 170)
+                };
+            }
+            
+            // Lab results
+            const labFields = ['hemoglobin', 'wbc_count', 'platelet_count', 'fasting_glucose', 'hba1c',
+                              'total_cholesterol', 'ldl_cholesterol', 'hdl_cholesterol', 'triglycerides',
+                              'creatinine', 'sgot_ast', 'sgpt_alt', 'tsh'];
+            
+            labFields.forEach(field => {
+                const value = formData.get(field);
+                if (value) {
+                    data.lab_results[field] = parseFloat(value);
+                }
+            });
+            
+            // Symptoms
+            if (formData.get('chief_complaint')) {
+                data.symptoms = {
+                    chief_complaint: formData.get('chief_complaint'),
+                    symptoms_list: formData.get('symptoms_list') 
+                        ? formData.get('symptoms_list').split(',').map(s => s.trim())
+                        : []
+                };
+            }
+            
+            try {
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                // Hide loading
+                document.getElementById('loading').classList.remove('show');
+                
+                if (result.success) {
+                    displayResults(result.report);
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                document.getElementById('loading').classList.remove('show');
+                alert('Error connecting to server: ' + error.message);
+            }
+        });
+        
+        function displayResults(report) {
+            const resultsDiv = document.getElementById('results');
+            
+            let html = `
+                <h2>📊 Diagnostic Report</h2>
+                
+                <div class="summary-box">
+                    <h3>Executive Summary</h3>
+                    <div class="risk-badge risk-${report.overall_risk}">
+                        Overall Risk: ${report.overall_risk.toUpperCase()}
+                    </div>
+                    <p style="margin-top: 15px;">${report.summary}</p>
+                </div>
+            `;
+            
+            // Immediate Actions
+            if (report.immediate_actions && report.immediate_actions.length > 0) {
+                html += `
+                    <div class="alert alert-danger">
+                        <h3>⚠️ Immediate Actions Required</h3>
+                        <ul>
+                            ${report.immediate_actions.map(action => `<li>${action}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Possible Conditions
+            if (report.possible_conditions && report.possible_conditions.length > 0) {
+                html += `
+                    <div style="margin: 20px 0;">
+                        <h3>🔍 Possible Conditions Detected</h3>
+                        ${report.possible_conditions.map(cond => `
+                            <div class="condition-card">
+                                <h4>${cond.condition}</h4>
+                                <p><strong>Confidence:</strong> ${cond.confidence}</p>
+                                <p>${cond.description}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // Findings
+            if (report.findings && report.findings.length > 0) {
+                html += `
+                    <div style="margin: 20px 0;">
+                        <h3>📈 Detailed Findings (${report.findings.length})</h3>
+                        <div class="findings-grid">
+                            ${report.findings.map(finding => `
+                                <div class="finding-card">
+                                    <div class="finding-header">
+                                        <span class="finding-title">${finding.category}: ${finding.parameter}</span>
+                                        <span class="risk-badge risk-${finding.status}">${finding.status.toUpperCase()}</span>
+                                    </div>
+                                    <p><strong>Value:</strong> ${finding.value} (Normal: ${finding.normal_range})</p>
+                                    <p><strong>Interpretation:</strong> ${finding.interpretation}</p>
+                                    <div style="margin-top: 10px;">
+                                        <strong>Recommendations:</strong>
+                                        <ul style="margin-left: 20px; margin-top: 5px;">
+                                            ${finding.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Follow-up Tests
+            if (report.follow_up_tests && report.follow_up_tests.length > 0) {
+                html += `
+                    <div class="recommendations">
+                        <h3>🧪 Recommended Follow-up Tests</h3>
+                        <ul>
+                            ${report.follow_up_tests.map(test => `<li>${test}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // General Recommendations
+            if (report.general_recommendations && report.general_recommendations.length > 0) {
+                html += `
+                    <div class="recommendations">
+                        <h3>💡 General Health Recommendations</h3>
+                        <ul>
+                            ${report.general_recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            html += `
+                <div class="alert alert-warning" style="margin-top: 30px;">
+                    <strong>⚕️ Important Disclaimer:</strong> This is an automated preliminary analysis tool. 
+                    All findings should be reviewed and confirmed by a qualified healthcare professional. 
+                    Do not use this tool as a substitute for professional medical advice, diagnosis, or treatment.
+                </div>
+            `;
+            
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.add('show');
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

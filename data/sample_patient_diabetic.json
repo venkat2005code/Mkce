@@ -1,0 +1,47 @@
+{
+  "name": "John Doe",
+  "age": 45,
+  "gender": "male",
+  "blood_group": "A+",
+  "contact": "+1-555-0123",
+  "vital_signs": {
+    "temperature": 37.2,
+    "blood_pressure_systolic": 145,
+    "blood_pressure_diastolic": 92,
+    "heart_rate": 78,
+    "respiratory_rate": 16,
+    "oxygen_saturation": 97.5,
+    "weight": 85.5,
+    "height": 175
+  },
+  "lab_results": {
+    "hemoglobin": 13.2,
+    "wbc_count": 8500,
+    "platelet_count": 240000,
+    "fasting_glucose": 135,
+    "hba1c": 6.8,
+    "total_cholesterol": 245,
+    "ldl_cholesterol": 165,
+    "hdl_cholesterol": 38,
+    "triglycerides": 210,
+    "creatinine": 1.1,
+    "sgot_ast": 42,
+    "sgpt_alt": 48,
+    "tsh": 2.5
+  },
+  "medical_history": {
+    "chronic_conditions": ["Hypertension"],
+    "allergies": ["Penicillin"],
+    "current_medications": ["Lisinopril 10mg"],
+    "past_surgeries": [],
+    "family_history": ["Diabetes (father)", "Heart Disease (mother)"],
+    "smoking": false,
+    "alcohol_consumption": true
+  },
+  "symptoms": {
+    "chief_complaint": "Frequent urination and increased thirst for the past 2 weeks",
+    "symptoms_list": ["polyuria", "polydipsia", "fatigue", "blurred vision"],
+    "duration_days": 14,
+    "severity": "moderate"
+  }
+}

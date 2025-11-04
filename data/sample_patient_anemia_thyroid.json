@@ -1,0 +1,29 @@
+{
+  "name": "Jane Smith",
+  "age": 28,
+  "gender": "female",
+  "blood_group": "B+",
+  "vital_signs": {
+    "temperature": 37.8,
+    "blood_pressure_systolic": 118,
+    "blood_pressure_diastolic": 75,
+    "heart_rate": 88,
+    "respiratory_rate": 18,
+    "oxygen_saturation": 96.0,
+    "weight": 58,
+    "height": 165
+  },
+  "lab_results": {
+    "hemoglobin": 10.5,
+    "wbc_count": 12500,
+    "fasting_glucose": 92,
+    "total_cholesterol": 175,
+    "tsh": 8.5
+  },
+  "symptoms": {
+    "chief_complaint": "Persistent fatigue and weakness",
+    "symptoms_list": ["fatigue", "weakness", "dizziness", "pale skin", "cold intolerance"],
+    "duration_days": 30,
+    "severity": "moderate"
+  }
+}
